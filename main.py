@@ -7,7 +7,7 @@ def main():
     rodar = True
     
     while(rodar):
-        dadosSalvos = verificarArquivos()
+        contatos = verificarArquivos()
         clear()
         print("""
 -------- MENU --------
@@ -25,30 +25,11 @@ def main():
             continue
         match opcao:
             case 1:
-                contato = cadastrarContato(False)
-                contatoTemp = contato.replace(";"," ")
-                contatoTemp = contatoTemp.split()
-                telefone = contato[2]
-                email = contato[3]
-                try:
-                    with open('data/contatos.txt', 'a') as arquivo:
-                        if telefone in dadosSalvos:
-                            print("Telefone Repetido")
-                        elif email in dadosSalvos:
-                            print("Email Repetido")
-                        else:
-                            arquivo.write(contato)
+                cadastrado = cadastrarContato(True,contatos)
+                print("Contato Cadastrado") if cadastrado else print("Contato NÃO Cadastrado")
 
-                except FileNotFoundError:
-                    with open('data/contatos.txt', 'w') as arquivo:
-                        if telefone in dadosSalvos:
-                            print("Telefone Repetido")
-                        elif email in dadosSalvos:
-                            print("Email Repetido")
-                        else:
-                            arquivo.write(contato)
             case 2:
-                listaFormatada = listarContatos(dadosSalvos)
+                listaFormatada = listarContatos(contatos)
                 print("\n".join(sorted(listaFormatada)))
                 input()
 
@@ -59,7 +40,7 @@ def main():
                 if busca.isalpha():
                     busca = busca.strip()
                 
-                for linha in dadosSalvos:
+                for linha in contatos:
                     buscaTemp = linha.lower()
                     if busca in buscaTemp:
                         print(linha)
@@ -70,7 +51,7 @@ def main():
 
             case 4:
                 email = input("Digite o email da pessoa a atualizar: ")
-                atualizou = atualizarContato(dadosSalvos,email)
+                atualizou = atualizarContato(contatos,email)
                 if atualizou:
                     print("Contato Atualizado")
                     sleep(3)
@@ -80,7 +61,7 @@ def main():
 
             case 5:
                 telefone = input("Telefone do cadastro a ser deletado: ")
-                deletou = deletarContato(dadosSalvos, telefone)
+                deletou = deletarContato(contatos, telefone)
                 if deletou:
                     print("Contato Deletado")
                     sleep(3)
@@ -90,7 +71,7 @@ def main():
                     
             case 6:
                 listaExportada = ""
-                for linha in dadosSalvos:
+                for linha in contatos:
                     linha = linha.replace(';', ' ')
                     linha = linha.split()
                     listaExportada += f"Nome: {linha[0]} {linha[1]}\n"

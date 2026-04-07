@@ -1,19 +1,41 @@
-def cadastrarContato(atualizar):
+def cadastrarContato(cadastrar,contatos):
+    nome = verificarNome()
+    telefone = verificarTelefone()
+    email = verificarEmail()
+    if cadastrar:
+        contato = f"{nome};{telefone};{email}\n"
+        modoEscrita = 'a'
+        while(1):
+            try:
+                with open('data/contatos.txt', modoEscrita) as arquivo:
+                    if telefone in contatos:
+                        print("Telefone Repetido")
+                    elif email in contatos:
+                        print("Email Repetido")
+                    else:
+                        arquivo.write(contato)
+                        return True
+            except FileNotFoundError:
+                modoEscrita = 'w'
+
+def verificarNome():
     while(1):
+
         nome = input("Nome: ")
         nome = nome.split()
         nome[0] = nome[0].capitalize()
+
         try:
             nome[1] = nome[1].capitalize()
             if nome[0].isalpha() and nome[1].isalpha():
                 nome = f"{nome[0]} {nome[1]}"
-                break
-            
+                return nome
             print("Insira um nome e sobrenome válido!")
+
         except IndexError:
             print("Insira um nome e sobrenome válido!")
-            pass
-        
+
+def verificarTelefone():
     while(1):
         ddds_brasil = [
     '11', '12', '13', '14', '15', '16', '17', '18', '19',
@@ -31,21 +53,19 @@ def cadastrarContato(atualizar):
 ]
         telefone = input("Telefone: ")             
         if len(telefone) >= 10 and telefone.isnumeric() and f'{telefone[0]}{telefone[1]}' in ddds_brasil:
-            break
+            return telefone
         else:
             print("Insira um telefone válido!")
 
+def verificarEmail():
     while(1):
         email = input("Email: ")
-        if '@' in email:
+        if '@' in email and f"{email[-4]}{email[-3]}{email[-2]}{email[-1]}" == ".com":
             email = email.lower()
-            break
+            return email
         else:
             print("Insira um email válido!")
-    if atualizar:
-        return f"{nome};{telefone};{email}"
-    return f"{nome};{telefone};{email}\n"
-
+    
 def verificarArquivos():
     try:
         with open('data/contatos.txt', 'r') as arquivo:
@@ -89,7 +109,7 @@ def atualizarContato(lista, email):
         linhaTemp = linha.replace(";", " ")
         linhaTemp = linhaTemp.split()
         if email == linhaTemp[3]:
-            lista[cont] = cadastrarContato(True)
+            lista[cont] = cadastrarContato(False)
             emailEncontrado = True
             break
 
