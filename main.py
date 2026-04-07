@@ -1,4 +1,4 @@
-from metodos import verificarArquivos,cadastrarContato,listarContatos,deletarContato, atualizarContato, clear
+from metodos import verificarArquivos,cadastrarContato,listarContatos,buscarContato,deletarContato, atualizarContato, clear
 from time import sleep
 import os
 os.makedirs('data', exist_ok=True)
@@ -28,30 +28,21 @@ def main():
                 cadastrado = cadastrarContato(True,contatos)
                 print("Contato Cadastrado") if cadastrado else print("Contato NÃO Cadastrado")
                 sleep(3)
-                
+
             case 2:
                 listaFormatada = listarContatos(contatos)
-                print("-"*40)
-                print("\n".join(sorted(listaFormatada)))
-                print("-"*40)
+                print(listaFormatada)
                 input("Pressione qualquer tecla...")
 
             case 3:
-                encontrou = False
-                busca = input("Insira nome ou telefone: ")
-                
-                if busca.isalpha():
-                    busca = busca.strip()
-                
-                for linha in contatos:
-                    buscaTemp = linha.lower()
-                    if busca in buscaTemp:
-                        print(linha)
-                        encontrou = True
-                if not encontrou:
+                listaBusca = buscarContato(contatos)
+                if listaBusca:
+                    print(listarContatos(listaBusca))
+                    input("Pressione qualquer tecla...")
+                else: 
                     print("Busca não encontrada")
-                input()
-
+                    sleep(3)
+                
             case 4:
                 email = input("Digite o email da pessoa a atualizar: ")
                 atualizou = atualizarContato(contatos,email)

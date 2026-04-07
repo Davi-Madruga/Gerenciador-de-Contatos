@@ -83,8 +83,21 @@ def listarContatos(contatos):
 
         contatoFormatado = f"{contato[0]} {contato[1]} | {contato[2]} | {contato[3]}"
         contatosFormatados.append(contatoFormatado)
-        
-    return contatosFormatados
+
+    return "-"*40 + "\n" + "\n".join(sorted(contatosFormatados)) + "\n" + "-"*40
+
+def buscarContato(contatos):
+    listaBusca = []
+    if contatos:
+        busca = input("Insira nome ou telefone: ")
+
+        for contato in contatos:
+            contatoTemp = contato.replace(';', ' ')
+            contatoTemp = contatoTemp.split()
+            if contatoTemp[2] == busca or busca in f"{contatoTemp[0]} {contatoTemp[1]}":
+                listaBusca.append(contato)
+
+    return listaBusca
 
 def deletarContato(lista, telefone):
     telefone = telefone.strip()
