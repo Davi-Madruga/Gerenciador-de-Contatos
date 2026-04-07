@@ -138,6 +138,17 @@ def deletarContato(contatos):
         
     return contatoEncontrado
 
+def exportarContatos(contatos):
+    listaExportada = ""
+    for contato in contatos:
+        contato = contato.split(';')
+        listaExportada += f"Nome: {contato[0]}\n"
+        listaExportada += f"Telefone: {contato[1]}\n"
+        listaExportada += f"Email: {contato[2]}\n\n"
+
+    with open('data/export_contatos.txt', 'w') as arquivo:
+        arquivo.write(listaExportada)
+
 def clear():
     import os
     os.system("cls")

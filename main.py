@@ -1,4 +1,4 @@
-from metodos import verificarArquivos,cadastrarContato,listarContatos,buscarContato,deletarContato, atualizarContato, clear
+from metodos import verificarArquivos,cadastrarContato,listarContatos,buscarContato,deletarContato, atualizarContato, exportarContatos, clear
 from time import sleep
 import os
 os.makedirs('data', exist_ok=True)
@@ -54,19 +54,10 @@ def main():
                 sleep(3)
                  
             case 6:
-                listaExportada = ""
-                for linha in contatos:
-                    linha = linha.replace(';', ' ')
-                    linha = linha.split()
-                    listaExportada += f"Nome: {linha[0]} {linha[1]}\n"
-                    listaExportada += f"Telefone: {linha[2]}\n"
-                    listaExportada += f"Email: {linha[3]}\n"
-
-                with open('data/export_contatos.txt', 'w') as arquivo:
-                    arquivo.write(listaExportada)
-                print("Lista Exportada")
+                exportarContatos(contatos)
+                print("Lista de contatos exportada!")
                 sleep(3)
-
+                
             case 7:
                 print("Fechando programa...")
                 rodar = False
