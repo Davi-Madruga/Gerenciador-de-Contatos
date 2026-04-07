@@ -49,15 +49,10 @@ def main():
                 sleep(3)
 
             case 5:
-                telefone = input("Telefone do cadastro a ser deletado: ")
-                deletou = deletarContato(contatos, telefone)
-                if deletou:
-                    print("Contato Deletado")
-                    sleep(3)
-                else:
-                    print("Contato não encontrado")
-                    sleep(3)
-                    
+                deletou = deletarContato(contatos)
+                print("Contato Deletado") if deletou else print("Contato não encontrado")
+                sleep(3)
+                 
             case 6:
                 listaExportada = ""
                 for linha in contatos:

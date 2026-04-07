@@ -118,20 +118,23 @@ def atualizarContato(contatos):
                 arquivo.write(f'{contato}\n')
     return emailEncontrado
 
-def deletarContato(lista, telefone):
-    telefone = telefone.strip()
+def deletarContato(contatos):
     contatoEncontrado = False
 
-    for linha in lista:
-        if telefone in linha:
-            lista.remove(linha)
+    telefone = input("Telefone do cadastro a ser deletado: ")
+    telefone = telefone.strip()
+    
+    for contato in contatos:
+        contatoTemp = contato.split(";")
+        if telefone == contatoTemp[1]:
+            contatos.remove(contato)
             contatoEncontrado = True
             break
         
     if contatoEncontrado:
         with open(f'data/contatos.txt', 'w') as arquivo:
-            for linha in lista:
-                arquivo.write(f'{linha}\n')
+            for contato in contatos:
+                arquivo.write(f'{contato}\n')
         
     return contatoEncontrado
 
