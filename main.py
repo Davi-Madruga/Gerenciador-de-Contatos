@@ -44,14 +44,9 @@ def main():
                     sleep(3)
                 
             case 4:
-                email = input("Digite o email da pessoa a atualizar: ")
-                atualizou = atualizarContato(contatos,email)
-                if atualizou:
-                    print("Contato Atualizado")
-                    sleep(3)
-                else:
-                    print("Email não encontrado")
-                    sleep(3)
+                atualizou = atualizarContato(contatos)
+                print("Contato Atualizado") if atualizou else print("Email não encontrado")
+                sleep(3)
 
             case 5:
                 telefone = input("Telefone do cadastro a ser deletado: ")

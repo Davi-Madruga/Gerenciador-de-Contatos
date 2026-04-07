@@ -25,6 +25,8 @@ def cadastrarContato(cadastrar,contatos):
                         return True
             except FileNotFoundError:
                 modoEscrita = 'w'
+    else:
+        return f"{nome};{telefone};{email}"
 
 def verificarNome():
     while(1):
@@ -78,10 +80,8 @@ def listarContatos(contatos):
     contatosFormatados = []
 
     for contato in contatos:
-        contato = contato.replace(';', ' ')
-        contato = contato.split()
-
-        contatoFormatado = f"{contato[0]} {contato[1]} | {contato[2]} | {contato[3]}"
+        contato = contato.split(";")
+        contatoFormatado = f"{contato[0]} | {contato[1]} | {contato[2]}"
         contatosFormatados.append(contatoFormatado)
 
     return "-"*40 + "\n" + "\n".join(sorted(contatosFormatados)) + "\n" + "-"*40
@@ -92,12 +92,31 @@ def buscarContato(contatos):
         busca = input("Insira nome ou telefone: ")
 
         for contato in contatos:
-            contatoTemp = contato.replace(';', ' ')
-            contatoTemp = contatoTemp.split()
-            if contatoTemp[2] == busca or busca in f"{contatoTemp[0]} {contatoTemp[1]}":
+            contatoTemp = contato.split(";")
+            if busca in contatoTemp[0] or contatoTemp[1] == busca:
                 listaBusca.append(contato)
 
     return listaBusca
+
+def atualizarContato(contatos):
+    emailEncontrado = False
+    email = input("Digite o email da pessoa a atualizar: ")
+    email = email.strip().lower()
+    
+    for i in range(len(contatos)):
+        contato = contatos[i]
+        contatoTemp = contato.split(";")
+
+        if email == contatoTemp[2]:
+            contatos[i] = cadastrarContato(False, contatos)
+            emailEncontrado = True
+            break
+
+    if emailEncontrado:
+        with open(f'data/contatos.txt', 'w') as arquivo:
+            for contato in contatos:
+                arquivo.write(f'{contato}\n')
+    return emailEncontrado
 
 def deletarContato(lista, telefone):
     telefone = telefone.strip()
@@ -115,26 +134,6 @@ def deletarContato(lista, telefone):
                 arquivo.write(f'{linha}\n')
         
     return contatoEncontrado
-
-def atualizarContato(lista, email):
-    email = email.strip().lower()
-    emailEncontrado = False
-    cont = -1
-    for linha in lista:
-        cont += 1
-        linhaTemp = linha.replace(";", " ")
-        linhaTemp = linhaTemp.split()
-        if email == linhaTemp[3]:
-            lista[cont] = cadastrarContato(False)
-            emailEncontrado = True
-            break
-
-    if emailEncontrado:
-        with open(f'data/contatos.txt', 'w') as arquivo:
-            for linha in lista:
-                arquivo.write(f'{linha}\n')
-    
-    return emailEncontrado
 
 def clear():
     import os
