@@ -1,3 +1,11 @@
+def verificarArquivos():
+    try:
+        with open('data/contatos.txt', 'r') as arquivo:
+            dados = [linha.strip() for linha in arquivo]
+    except FileNotFoundError:
+        dados = []
+    return dados
+
 def cadastrarContato(cadastrar,contatos):
     nome = verificarNome()
     telefone = verificarTelefone()
@@ -65,23 +73,18 @@ def verificarEmail():
             return email
         else:
             print("Insira um email válido!")
-    
-def verificarArquivos():
-    try:
-        with open('data/contatos.txt', 'r') as arquivo:
-            dados = [linha.strip() for linha in arquivo]
-    except FileNotFoundError:
-        dados = []
-    return dados
 
-def listarContatos(lista):
-    listaFormatada = []
-    for linha in lista:
-        linha = linha.replace(';', ' ')
-        linha = linha.split()
-        itemLista = f"{linha[0]} {linha[1]} | {linha[2]} | {linha[3]}"
-        listaFormatada.append(itemLista)
-    return listaFormatada
+def listarContatos(contatos):
+    contatosFormatados = []
+
+    for contato in contatos:
+        contato = contato.replace(';', ' ')
+        contato = contato.split()
+
+        contatoFormatado = f"{contato[0]} {contato[1]} | {contato[2]} | {contato[3]}"
+        contatosFormatados.append(contatoFormatado)
+        
+    return contatosFormatados
 
 def deletarContato(lista, telefone):
     telefone = telefone.strip()
