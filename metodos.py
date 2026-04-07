@@ -1,0 +1,105 @@
+def cadastrarContato(atualizar):
+    while(1):
+        nome = input("Nome: ")
+        nome = nome.split()
+        nome[0] = nome[0].capitalize()
+        try:
+            nome[1] = nome[1].capitalize()
+            if nome[0].isalpha() and nome[1].isalpha():
+                nome = f"{nome[0]} {nome[1]}"
+                break
+            
+            print("Insira um nome e sobrenome válido!")
+        except IndexError:
+            print("Insira um nome e sobrenome válido!")
+            pass
+        
+    while(1):
+        ddds_brasil = [
+    '11', '12', '13', '14', '15', '16', '17', '18', '19',
+    '21', '22', '24', '27', '28',
+    '31', '32', '33', '34', '35', '37', '38',
+    '41', '42', '43', '44', '45', '46',
+    '47', '48', '49',
+    '51', '53', '54', '55',
+    '61', '62', '63', '64', '65', '66', '67',
+    '68', '69',
+    '71', '73', '74', '75', '77',
+    '79',
+    '81', '82', '83', '84', '85', '86', '87', '88', '89',
+    '91', '92', '93', '94', '95', '96', '97', '98', '99'
+]
+        telefone = input("Telefone: ")             
+        if len(telefone) >= 10 and telefone.isnumeric() and f'{telefone[0]}{telefone[1]}' in ddds_brasil:
+            break
+        else:
+            print("Insira um telefone válido!")
+
+    while(1):
+        email = input("Email: ")
+        if '@' in email:
+            email = email.lower()
+            break
+        else:
+            print("Insira um email válido!")
+    if atualizar:
+        return f"{nome};{telefone};{email}"
+    return f"{nome};{telefone};{email}\n"
+
+def verificarArquivos():
+    try:
+        with open('data/contatos.txt', 'r') as arquivo:
+            dados = [linha.strip() for linha in arquivo]
+    except FileNotFoundError:
+        dados = []
+    return dados
+
+def listarContatos(lista):
+    listaFormatada = []
+    for linha in lista:
+        linha = linha.replace(';', ' ')
+        linha = linha.split()
+        itemLista = f"{linha[0]} {linha[1]} | {linha[2]} | {linha[3]}"
+        listaFormatada.append(itemLista)
+    return listaFormatada
+
+def deletarContato(lista, telefone):
+    telefone = telefone.strip()
+    contatoEncontrado = False
+
+    for linha in lista:
+        if telefone in linha:
+            lista.remove(linha)
+            contatoEncontrado = True
+            break
+        
+    if contatoEncontrado:
+        with open(f'data/contatos.txt', 'w') as arquivo:
+            for linha in lista:
+                arquivo.write(f'{linha}\n')
+        
+    return contatoEncontrado
+
+def atualizarContato(lista, email):
+    email = email.strip().lower()
+    emailEncontrado = False
+    cont = -1
+    for linha in lista:
+        cont += 1
+        linhaTemp = linha.replace(";", " ")
+        linhaTemp = linhaTemp.split()
+        if email == linhaTemp[3]:
+            lista[cont] = cadastrarContato(True)
+            emailEncontrado = True
+            break
+
+    if emailEncontrado:
+        with open(f'data/contatos.txt', 'w') as arquivo:
+            for linha in lista:
+                arquivo.write(f'{linha}\n')
+    
+    return emailEncontrado
+
+def clear():
+    import os
+    os.system("cls")
